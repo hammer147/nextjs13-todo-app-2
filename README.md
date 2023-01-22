@@ -1,38 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Nextjs 13 App folder demo
 
-## Getting Started
+We have a home page at the root of the app an 2 subtrees:
 
-First, run the development server:
+- todos (uses jsonplaceholder.typicode.com)
+- search (uses serpapi.com)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Note that we have multiple layout.tsx files that are used to wrap the pages content.  
+The layouts persist across page changes, deeper down the tree.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Todos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The Todos page will change when a user clicks on a todo item from todo-list.tsx in layout.tsx.  
+It will display the page in the dynamic route [todoId].  
+We check for the existence of the todo in the page component, if it doesn't, we call the notFound function from 'next/navigation' to render the special not-found.tsx page.  
+Note that all components in this subtree are server components, but we would need a client component if we would add te ability to add a todo via a form.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Search
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+We added a head.tsx to change the title for the search subtree.  
+We have a search.tsx in a layout.tsx file.  
+When a search is performed, the layout persists and the page changes to the search results page (in the dynamic route [searchTerm]).  
+Note that Next.js will recognize the await keyword and will automatically render the special loading.tsx page while the search is being performed (await search(searchTerm)).  
+In the dynamic route page, we can throw an error to render the special error.tsx page.  
+Note that search.tsx is the only client component in this subtree.
